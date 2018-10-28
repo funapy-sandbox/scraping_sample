@@ -47,7 +47,7 @@ func main() {
 	})
 }
 
-// take out after "郡".e.g) 葦北郡芦北町 => 芦北町
+// take out after "郡". e.g) 葦北郡芦北町 => 芦北町
 // If there is "市" and "区", "区" is given priority. e.g) 熊本市中央区 => 中央区
 func normalize(city string) string {
 	idx := strings.Index(city, "郡")
