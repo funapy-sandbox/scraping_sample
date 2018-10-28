@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -35,8 +36,8 @@ func main() {
 		if ti > len(cityFinds) {
 			log.Fatalf("ti is bigger than len(finds). ti is %v, len(finds) is %v\n", ti, len(cityFinds))
 		}
-		lat := dmsToDeg(ts.Find("TR").Eq(1).Find("TD").Eq(1).Text()[1:])
-		lon := dmsToDeg(ts.Find("TR").Eq(2).Find("TD").Eq(1).Text()[1:])
+		lon := dmsToDeg(ts.Find("TR").Eq(1).Find("TD").Eq(1).Text()[1:])
+		lat := dmsToDeg(ts.Find("TR").Eq(2).Find("TD").Eq(1).Text()[1:])
 		city := normalize(cityFinds[ti][1])
 
 		// city: "" -> city: "熊本県"
@@ -45,9 +46,11 @@ func main() {
 		}
 
 		m[city] = map[string]float64{
-			"lat": lat,
 			"lon": lon,
+			"lat": lat,
 		}
+
+		fmt.Printf(`"%s",`, city)
 	})
 
 	dumpJSON("./output/data.json", m)
