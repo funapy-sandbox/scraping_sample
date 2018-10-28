@@ -26,7 +26,7 @@ func main() {
 
 	doc.Find("table").Each(func(ti int, ts *goquery.Selection) {
 		if ti > len(cityFinds) {
-			log.Fatalf("ti is smaller than len(finds). ti is %v, len(finds) is %v\n", ti, len(cityFinds))
+			log.Fatalf("ti is bigger than len(finds). ti is %v, len(finds) is %v\n", ti, len(cityFinds))
 		}
 		lat := ts.Find("TR").Eq(1).Find("TD").Eq(1).Text()
 		lon := ts.Find("TR").Eq(2).Find("TD").Eq(1).Text()
