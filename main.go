@@ -36,7 +36,7 @@ func main() {
 		if ti > len(cityFinds) {
 			log.Fatalf("ti is bigger than len(finds). ti is %v, len(finds) is %v\n", ti, len(cityFinds))
 		}
-		lon := dmsToDeg(ts.Find("TR").Eq(1).Find("TD").Eq(1).Text()[1:])
+		lng := dmsToDeg(ts.Find("TR").Eq(1).Find("TD").Eq(1).Text()[1:])
 		lat := dmsToDeg(ts.Find("TR").Eq(2).Find("TD").Eq(1).Text()[1:])
 		city := normalize(cityFinds[ti][1])
 
@@ -46,7 +46,7 @@ func main() {
 		}
 
 		m[city] = map[string]float64{
-			"lon": lon,
+			"lng": lng,
 			"lat": lat,
 		}
 
