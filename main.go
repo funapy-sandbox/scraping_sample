@@ -98,11 +98,11 @@ func dmsToDeg(dms string) float64 {
 	return degree + (min / 60) + (sec / 60 / 60)
 }
 
-func dumpJSON(path string, m map[string]map[string]float64) {
+func dumpJSON(path string, m map[string]map[string]float64) error {
 	d, err := json.Marshal(m)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
-	ioutil.WriteFile(path, d, os.ModePerm)
+	return ioutil.WriteFile(path, d, os.ModePerm)
 }
