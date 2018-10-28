@@ -1,8 +1,10 @@
 package main
 
 import (
-	"fmt"
+	"encoding/json"
+	"io/ioutil"
 	"log"
+	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -28,6 +30,7 @@ func main() {
 
 	pageTitle := doc.Find("title").Text()
 
+	m := make(map[string]map[string]float64)
 	doc.Find("table").Each(func(ti int, ts *goquery.Selection) {
 		if ti > len(cityFinds) {
 			log.Fatalf("ti is bigger than len(finds). ti is %v, len(finds) is %v\n", ti, len(cityFinds))
@@ -41,10 +44,13 @@ func main() {
 			city = pageTitle
 		}
 
-		fmt.Println(city)
-		fmt.Println(lat)
-		fmt.Println(lon)
+		m[city] = map[string]float64{
+			"lat": lat,
+			"lon": lon,
+		}
 	})
+
+	dumpJSON("./output/data.json", m)
 }
 
 // take out after "郡". e.g) 葦北郡芦北町 => 芦北町
@@ -90,4 +96,13 @@ func dmsToDeg(dms string) float64 {
 	sec, _ = strconv.ParseFloat(minSplit[1][:l], 64)
 
 	return degree + (min / 60) + (sec / 60 / 60)
+}
+
+func dumpJSON(path string, m map[string]map[string]float64) {
+	d, err := json.Marshal(m)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	ioutil.WriteFile(path, d, os.ModePerm)
 }
