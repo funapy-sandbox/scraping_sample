@@ -19,14 +19,14 @@ func main() {
 		log.Fatal(err)
 	}
 
-	pageTitle := doc.Find("title").Text()
-
 	html, err := doc.Html()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	cityFinds := r.FindAllStringSubmatch(html, -1)
+
+	pageTitle := doc.Find("title").Text()
 
 	doc.Find("table").Each(func(ti int, ts *goquery.Selection) {
 		if ti > len(cityFinds) {
