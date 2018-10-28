@@ -34,7 +34,7 @@ func main() {
 		}
 		lat := dmsToDeg(ts.Find("TR").Eq(1).Find("TD").Eq(1).Text()[1:])
 		lon := dmsToDeg(ts.Find("TR").Eq(2).Find("TD").Eq(1).Text()[1:])
-		city := cityFinds[ti][1]
+		city := normalize(cityFinds[ti][1])
 
 		// city: "" -> city: "熊本県"
 		if city == "" {
@@ -45,6 +45,23 @@ func main() {
 		fmt.Println(lat)
 		fmt.Println(lon)
 	})
+}
+
+// take out after "郡".e.g) 葦北郡芦北町 => 芦北町
+// If there is "市" and "区", "区" is given priority. e.g) 熊本市中央区 => 中央区
+func normalize(city string) string {
+	idx := strings.Index(city, "郡")
+	if idx != -1 {
+		city = city[idx+3:]
+	}
+
+	idxShi := strings.Index(city, "市")
+	idxKu := strings.Index(city, "区")
+
+	if idxShi != -1 && idxKu != -1 {
+		city = city[idxShi+3:]
+	}
+	return city
 }
 
 // 35°41′28.5576″ => 35.691266
