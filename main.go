@@ -19,6 +19,8 @@ func main() {
 		log.Fatal(err)
 	}
 
+	pageTitle := doc.Find("title").Text()
+
 	html, err := doc.Html()
 	if err != nil {
 		log.Fatal(err)
@@ -34,8 +36,9 @@ func main() {
 		lon := dmsToDeg(ts.Find("TR").Eq(2).Find("TD").Eq(1).Text()[1:])
 		city := cityFinds[ti][1]
 
+		// city: "" -> city: "熊本県"
 		if city == "" {
-			city = "熊本県"
+			city = pageTitle
 		}
 
 		fmt.Println(city)
